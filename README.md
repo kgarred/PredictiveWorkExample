@@ -17,7 +17,7 @@ tqdm_notebook.pandas()<br>
 <br>
 ### Load the feature data file
 <br>
-# Load file with user summaries<br>
+**Load file with user summaries**<br>
 filename = os.path.join(os.path.dirname(__name__), "DataFiles\\feature_dataset.tsv")<br>
 df = pd.read_csv(filename,delimiter='\t',low_memory=False)<br>
 df.head(2)<br>
