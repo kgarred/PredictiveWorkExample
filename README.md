@@ -43,7 +43,7 @@ single_df = pd.merge(single_summary_df, target, how="left", on=["film_id"])<br>
 #### Pre-process dataset<br>
 lowercase the target labels and strip any extra spaces<br>
 <br>
-single_df['manual_label'] = single_df['manual_label'].progress_apply(la
+single_df['manual_label'] = single_df['manual_label'].progress_apply(lambda x: (x.lower().strip())) <br>
 X = single_df.drop(['manual_label','summary_id', 'summary','film_id',], axis=1)<br>
 y = single_df['manual_label']mbda x: (x.lower().strip()))<br>
 <br>
