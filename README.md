@@ -15,14 +15,14 @@ import seaborn as sns<br>
 from tqdm.notebook import tqdm_notebook<br>
 tqdm_notebook.pandas()<br>
 <br>
-### Load the feature data file<br>
+### Load the feature data file
 <br>
 # Load file with user summaries<br>
 filename = os.path.join(os.path.dirname(__name__), "DataFiles\\feature_dataset.tsv")<br>
 df = pd.read_csv(filename,delimiter='\t',low_memory=False)<br>
 df.head(2)<br>
 <br>
-### Select the labelled data<br>
+### Select the labelled data
 <br>
 # read the summary data<br>
 filename = os.path.join(os.path.dirname(__name__), "DataFiles\\target_labels.csv")<br>
@@ -30,17 +30,17 @@ target = pd.read_csv(filename,delimiter=',',low_memory=False)<br>
 <br>
 labelled_movie_list = list(target.film_id.unique())<br>
 <br>
-#### Create unlabelled dataset<br>
+#### Create unlabelled dataset
 <br>
 unlabelled_df = df[~df['film_id'].isin(labelled_movie_list)]<br>
 <br>
-#### Merge feature data with target labels<br>
+#### Merge feature data with target labels
 <br>
 # individual summaries<br>
 single_summary_df = df[df['film_id'].isin(labelled_movie_list)]<br>
 single_df = pd.merge(single_summary_df, target, how="left", on=["film_id"])<br>
 <br>
-#### Pre-process dataset<br>
+#### Pre-process dataset
 lowercase the target labels and strip any extra spaces<br>
 <br>
 single_df['manual_label'] = single_df['manual_label'].progress_apply(lambda x: (x.lower().strip())) <br>
@@ -49,7 +49,7 @@ y = single_df['manual_label']mbda x: (x.lower().strip()))<br>
 <br>
 single_df.manual_label.value_counts()<br>
 <br>
-### Data split into train and test<br>
+### Data split into train and test
 <br>
 from sklearn.model_selection import train_test_split<br>
 <br>
@@ -59,7 +59,7 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, stratif
 print(f"X_train.shape: {X_train.shape}")<br>
 print(f"X_test.shape: {X_test.shape}")<br>
 <br>
-### Feature creation<br>
+### Feature creation
 Convert string embeddings into tensor normalized embeddings<br>
 <br>
 # convert strings into normalized embeddings<br>
@@ -78,12 +78,12 @@ X_train_embeddings = np.vstack(X_train['st_embeddings'].values)<br>
 X_test_embeddings = np.vstack(X_test['st_embeddings'].values)<br>
 X_train_embeddings.shape<br>
 <br>
-#### Create a feature set with embeddings and sentiment scores<br>
+#### Create a feature set with embeddings and sentiment scores
 <br>
 X_train_features = np.column_stack((X_train_embeddings, sentiment_train_scaled))<br>
 X_test_features = np.column_stack((X_test_embeddings, sentiment_test_scaled))<br>
 <br>
-### Correct imbalance using class weights<br>
+### Correct imbalance using class weights
 <br>
 from sklearn.utils.class_weight import compute_class_weight<br>
 <br>
@@ -93,7 +93,7 @@ class_weights<br>
 class_weight_dict = dict(zip(np.unique(y), class_weights))<br>
 class_weight_dict<br>
 <br>
-### Base-line accuracy<br>
+### Base-line accuracy
 <br>
 from sklearn.dummy import DummyClassifier<br>
 from sklearn.metrics import accuracy_score<br>
@@ -106,14 +106,14 @@ acc1 = accuracy_score(y_train, dc1.predict(X_train_features))<br>
 <br>
 print(f'Baseline accuracy = {acc1:.3f}')<br>
 <br>
-### Apply SVM <br>
+### Apply SVM 
 from sklearn.svm import SVC<br>
 from sklearn.decomposition import PCA<br>
 from sklearn.preprocessing import StandardScaler<br>
 from sklearn.pipeline import make_pipeline<br>
 from sklearn.model_selection import train_test_split, GridSearchCV, StratifiedKFold<br>
 <br>
-### SVC models hyper parameters defined<br>
+### SVC models hyper parameters defined
 <br>
 param_C_values = [1, 10, 100, 1000]<br>
 param_gamma_values = [0.1, 0.01, 0.001, 0.0001]<br>
@@ -136,7 +136,7 @@ param_grid = [<br>
                }<br>
 ]<br>
 <br>
-### SVC models with features - embeddings + sentiment score <br>
+### SVC models with features - embeddings + sentiment score 
 <br>
 from sklearn.model_selection import cross_val_score<br>
 <br>
@@ -205,7 +205,7 @@ gs = GridSearchCV(estimator = SVC(),<br>
                   refit = True,<br>
                   verbose = 3)<br>
 <br>
-#### Running model selection on the training set:<br>
+#### Running model selection on the training set:
 <br>
 gs.fit(X_train_features, y_train)<br>
 <br>
@@ -219,7 +219,7 @@ best_model.set_params(**best_model_params)<br>
 best_model.probability = True    <br>
 best_model.fit(X_train_features, y_train)<br>
 <br>
-#### Evaluating the best model<br>
+#### Evaluating the best model
 <br>
 <br>
 y_pred = best_model.predict(X_test_features)<br>
