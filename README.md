@@ -28,8 +28,7 @@ filename = os.path.join(os.path.dirname(__name__), "DataFiles\\feature_dataset.t
 df = pd.read_csv(filename,delimiter='\t',low_memory=False)<br>
 df.head(2)<br>
 <br>
-[[/assets/image/Figure-1.PNG|Input File]]
-[!Input File](\assets\image\Figure-1.PNG)
+[[/assets/image/Figure-1.PNG]]
 ### Select the labelled data
 <br>
 # read the summary data<br>
