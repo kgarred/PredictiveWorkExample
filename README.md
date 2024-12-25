@@ -1,4 +1,10 @@
 # PredictiveWorkExample
+In this example, we load the input file<br>
+Create features<br>
+Compute Base-line accuracy to compare.<br>
+Divide feature set into train and test dataset <br>
+Define hyper-parameters for SVM model using k-fold technique.<br>
+Select the best model and create classification report for Accuracy<br>
 
 ### Load the Libraries
 import pandas as pd<br>
@@ -17,11 +23,12 @@ tqdm_notebook.pandas()<br>
 <br>
 ### Load the feature data file
 <br>
-**Load file with user summaries**<br>
-filename = os.path.join(os.path.dirname(__name__), "DataFiles\\feature_dataset.tsv")<br>
+**Load file with user summaries** <br>
+filename = os.path.join(os.path.dirname(__name__), "DataFiles\\feature_dataset.tsv")<br> 
 df = pd.read_csv(filename,delimiter='\t',low_memory=False)<br>
 df.head(2)<br>
 <br>
+[!Input File](\assets\image\Figure-1.png)
 ### Select the labelled data
 <br>
 # read the summary data<br>
